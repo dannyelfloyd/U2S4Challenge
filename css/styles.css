@@ -78,4 +78,19 @@ ul {
 }
 
 
-
+#character-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#character-list li{
+  width: 20%;
+  margin: 5px;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+#character-list img{
+  width: 100%;
+}
