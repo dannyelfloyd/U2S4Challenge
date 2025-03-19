@@ -2,26 +2,40 @@ const prevPage = document.getElementById('prev-page');
 const nextPage = document.getElementById('next-page');
 const characterList = document.getElementById('character-list');
 
-actualizarPagina ();
-
-prevPage.addEventListener('click', actualizarPagina);
-nextPage.addEventListener('click', actualizarPagina);
+let currentPage = 1;
 
 function actualizarPagina () {
-    fetch('https://rickandmortyapi.com/api/character/?page=1')
+    fetch(`https://rickandmortyapi.com/api/character/?page=${currentPage}`)
     .then((response) => {
       if (!response.ok) {
-        throw new Error('La solicitud no fue existosa');
+        throw new Error(`Error: ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
-      console.log(data.info.pages);
+      characterList.innerHTML = "";
       data.results.forEach((personaje) => {
-        characterList.innerHTML += `<li><img src="${personaje.image}" alt=""><p>Name: ${personaje.name}</p><p>Species: ${personaje.species}</p></li>`;
+        characterList.innerHTML += 
+        `<li>
+          <img src="${personaje.image}" alt="Imagen de ${personaje.name}">
+          <p><b>Name</b>: ${personaje.name}</p>
+          <p><b>Species</b>: ${personaje.species}</p>
+        </li>`;
       });
     })
-    .catch((error) => {
-      alert('Error: No se puede obtener el personaje');
-    });
+    .catch((error) => console.error('Error: ', error.message));
 };
+actualizarPagina ();
+
+prevPage.addEventListener('click', () => {
+  if (currentPage !== 1){
+    currentPage--
+    actualizarPagina ();
+  }
+});
+nextPage.addEventListener('click', () => {
+  if (currentPage < 42){
+    currentPage++
+    actualizarPagina ();
+  }
+});
